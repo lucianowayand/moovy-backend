@@ -3,6 +3,11 @@ import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { MoviesController } from './api/v1/movies/movies.controller';
+import { MoviesService } from './api/v1/movies/movies.service';
+import { HttpClientModule } from './http-client/http-client.module';
+import { HttpClientService } from './http-client/http-client.service';
+import { MoviesModule } from './api/v1/movies/movies.module';
 import { UserModule } from './app/user/user.module';
 
 @Module({
@@ -18,5 +23,8 @@ import { UserModule } from './app/user/user.module';
   }), UserModule],
   controllers: [AppController],
   providers: [AppService],
+
+  controllers: [AppController, MoviesController],
+  providers: [AppService, MoviesService, HttpClientService],
 })
 export class AppModule { }
