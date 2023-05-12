@@ -1,8 +1,8 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class UserEntity {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
 
     @CreateDateColumn()
@@ -14,8 +14,8 @@ export class UserEntity {
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @Column({name:'full_name'})
-    fullName: string;
+    @Column()
+    full_name: string;
     
     @Column({unique: true})
     email: string;

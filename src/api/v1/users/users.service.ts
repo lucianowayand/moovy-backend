@@ -9,7 +9,7 @@ export class UsersService {
         this.userRepository = userRepository;
     }
 
-    async get(id: number){
+    async findOne(id: number){
         const user = await this.userRepository.findOne({
             where: {
                 id: id
@@ -20,5 +20,30 @@ export class UsersService {
         }
 
         return user;
+    }
+
+    async create(user: UserEntity){
+        const newUser = await this.userRepository.create(user);
+        return this.userRepository.save(newUser);
+    }
+
+    async update(id: number, user: UserEntity){
+        try{
+            await this.userRepository.update(id, user);
+        } catch (error) {
+            throw new HttpException(`Couldn't update user: ${error}`, HttpStatus.BAD_REQUEST);
+        }
+
+        return this.findOne(id);
+    }
+
+    async delete(id: number){
+        try {
+            await this.userRepository.delete(id);
+        } catch (error) {
+            throw new HttpException(`Couldn't delete user: ${error}`, HttpStatus.BAD_REQUEST);
+        }
+
+        return {message: 'User deleted successfully'};
     }
 }

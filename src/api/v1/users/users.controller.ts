@@ -1,5 +1,6 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { UserEntity } from './entities/user.entity';
 
 @Controller('/api/v1/users')
 export class UsersController {
@@ -8,7 +9,16 @@ export class UsersController {
 
     @Get(':id')
     get(@Param('id') id: number) {
-        return this.usersService.get(id);
+        return this.usersService.findOne(id);
     }
     
+    @Post()
+    create(@Body() user: UserEntity) {
+        return this.usersService.create(user);
+    }
+
+    @Patch(':id')
+    update(@Param('id') id: number, @Body() user: UserEntity) {
+        return this.usersService.update(id, user);
+    }
 }
