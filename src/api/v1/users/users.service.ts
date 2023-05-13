@@ -4,10 +4,32 @@ import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 
+export interface LoginPayload {
+    email: string;
+    password: string;
+}
+
 @Injectable()
 export class UsersService {
     constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>){
         this.userRepository = userRepository;
+    }
+
+    async login(body: LoginPayload){
+        const user = await this.userRepository.findOne({
+            where: {
+                email: body.email
+            }
+        }); 
+        if(!user){
+            throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+        }
+
+        if(!await bcrypt.compare(body.password, user.password)){
+            throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+        }
+
+        return user;
     }
 
     async findOne(id: number){

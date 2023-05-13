@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { LoginPayload, UsersService } from './users.service';
 import { UserEntity } from './entities/user.entity';
 
 @Controller('/api/v1/users')
@@ -15,6 +15,11 @@ export class UsersController {
     @Post()
     create(@Body() user: UserEntity) {
         return this.usersService.create(user);
+    }
+
+    @Post('login')
+    login(@Body() body: LoginPayload) {
+        return this.usersService.login(body);
     }
 
     @Patch(':id')
