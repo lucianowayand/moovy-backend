@@ -10,7 +10,12 @@ export class MoviesController {
     
     @Get()
     findBy(@Query('search') search: string ){
-        return this.moviesService.findBy(search);
+        return this.moviesService.findManyBy(search);
+    }
+
+    @Get('detail')
+    findOneBy(@Query('id') id: string ){
+        return this.moviesService.findOneBy(id);
     }
 
 
