@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { LibraryEntity } from '../../library/entities/library.entity';
 
-@Entity()
+@Entity('users')
 export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -22,4 +23,7 @@ export class UserEntity {
     
     @Column()
     password: string;
+
+    @OneToMany(type => LibraryEntity, library => library.user)
+    library: LibraryEntity[];
 }

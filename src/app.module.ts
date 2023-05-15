@@ -9,6 +9,7 @@ import { HttpClientModule } from './http-client/http-client.module';
 import { HttpClientService } from './http-client/http-client.service';
 import { MoviesModule } from './api/v1/movies/movies.module';
 import { UsersModule } from './api/v1/users/users.module';
+import { LibraryModule } from './api/v1/library/library.module';
 
 @Module({
   imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot({
@@ -20,7 +21,7 @@ import { UsersModule } from './api/v1/users/users.module';
     password: process.env.DB_PASS,
     synchronize: true, // Usado apenas para demonstração do desafio
     entities: [__dirname + "/**/*.entity{.ts,.js}"],
-  }), UsersModule, HttpClientModule, MoviesModule],
+  }), UsersModule, HttpClientModule, MoviesModule, LibraryModule],
   controllers: [AppController, MoviesController],
   providers: [AppService, MoviesService, HttpClientService],
 })
