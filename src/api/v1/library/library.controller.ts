@@ -11,6 +11,12 @@ export class LibraryController {
         return library;
     }
 
+    @Get('user/:userId/movie/:movieId')
+    async getMovieById(@Param('userId') userId: number, @Param('movieId') movieId: string) {
+        const library = await this.libraryService.getMovieById(userId, movieId);
+        return library;
+    }
+
     @Post('user/:userId/movie/:movieId')
     async addToLibrary(@Param('userId') userId: number, @Param('movieId') movieId: string) {
         const library = await this.libraryService.addToLibrary(userId, movieId);

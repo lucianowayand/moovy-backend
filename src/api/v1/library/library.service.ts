@@ -29,6 +29,40 @@ export class LibraryService {
         return library;
     }
 
+    async getMovieById(userId: number, movieId: string) {
+        let movie = await this.movieRepository.findOne({ where: { imdbID: movieId } });
+        if (!movie) {
+            const res = await this.httpClientService.get(`http://www.omdbapi.com/?apikey=${process.env.OMDB_API_KEY}&i=${movieId}`);
+            if (res.Response !== 'True') {
+                throw new HttpException(res.Error, HttpStatus.NOT_FOUND);
+            }
+
+            movie = new MoviesEntity()
+            movie.title = res.Title;
+            movie.poster = res.Poster;
+            movie.year = res.Year;
+            movie.imdbID = res.imdbID;
+            movie.imdbRating = res.imdbRating;
+        }
+
+        const library = await this.libraryRepository.findOne({
+            where: {
+                movie: {
+                    imdbID: movieId
+                },
+                user: {
+                    id: userId
+                }
+            }
+        });
+        const result = {
+            movie: movie,
+            inLibrary: library ? true : false,
+        }
+
+        return result;
+    }
+
     async addReview(userId: number, movieId: string, review: string) {
         const library = await this.libraryRepository.findOne({
             where: {
