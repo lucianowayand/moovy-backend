@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { LoginPayload, UsersService } from './users.service';
 import { UserEntity } from './entities/user.entity';
+import { AuthGuard } from './users.guard';
 
 @Controller('/api/v1/users')
 export class UsersController {
@@ -22,13 +23,14 @@ export class UsersController {
         return this.usersService.login(body);
     }
 
-    @Patch(':id')
-    update(@Param('id') id: number, @Body() user: UserEntity) {
-        return this.usersService.update(id, user);
-    }
-
     @Delete(':id')
     delete(@Param('id') id: number) {
         return this.usersService.delete(id);
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch(':id')
+    update(@Param('id') id: number, @Body() user: UserEntity) {
+        return this.usersService.update(id, user);
     }
 }
