@@ -15,6 +15,6 @@ export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(IsAuthorizedMiddleware)
-      .forRoutes({ path: ':id', method: RequestMethod.PATCH });
+      .forRoutes({ path: '/api/v1/users/:id', method: RequestMethod.PATCH });
   }
 }
