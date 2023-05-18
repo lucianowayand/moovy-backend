@@ -54,10 +54,14 @@ export class UsersService {
     }
 
     async create(user: UserEntity) {
-        const hash = await bcrypt.hash(user.password, 8);
-        user.password = hash;
-        const newUser = await this.userRepository.create(user);
-        return this.userRepository.save(newUser);
+        try {
+            const hash = await bcrypt.hash(user.password, 8);
+            user.password = hash;
+            const savedUser = await this.userRepository.save(user);
+            return { message: 'User created successfully' }
+        } catch (error) {
+            throw new HttpException(`Couldn't create user: ${error}`, HttpStatus.BAD_REQUEST);
+        }
     }
 
     async update(id: number, user: UserEntity) {
